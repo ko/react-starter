@@ -1,9 +1,9 @@
 var React = require('react')
 
-var SampleApp = React.createClass({
+var App = React.createClass({
 
     getInitialState: function() {
-        return
+        return null
     },
 
     render : function(){
@@ -15,4 +15,4 @@ var SampleApp = React.createClass({
     }
 })
 
-module.exports = SampleApp
+module.exports = App
