@@ -9,9 +9,15 @@ var DefaultRoute = Router.DefaultRoute
 var NotFoundRoute = Router.NotFoundRoute
 
 var App = require('./components/app.jsx')
+var Home = require('./components/home.jsx')
+var Foo = require('./components/foo.jsx')
 
 var routes = (
     <Route name="app" path="/" handler={App}>
+        <Route name="home" handler={Home} />
+        <Route name="foo" handler={Foo} />
+
+        <DefaultRoute handler={Home} />
     </Route>
 );
 
