@@ -1,45 +1,50 @@
-var webpack = require('webpack')
-var path = require('path')
+var path = require('path');
 
 module.exports = {
-    entry: {
-        bundle: ["!bootstrap-webpack!./assets/bootstrap.config.js",
-                "font-awesome-webpack!./assets/font-awesome.config.js",
-                "./assets/js/entry.jsx"]
+    resolve: {
+        root: [ path.join(__dirname, 'node_modules') ],
+        extensions: ['', '.scss', '.jsx', '.js', '.json']
     },
+
+    devServer: {
+        historyApiFallback: true,
+        hot: true,
+        progress: true,
+    },
+
+    entry: [
+        path.resolve(__dirname, 'app/main.js'),
+    ],
 
     output: {
-        path: __dirname + "/static",
-        publicPath: "",
-        filename: "js/[name].js",
-        chunkFilename: "js/[id].js",
-    },
-
-    resolve: {
-        modulesDirectories: ["node_modules", "assets"],
-        fallback: ["./assets"],
+        path: path.resolve(__dirname, 'build'),
+        filename: 'bundle.js',
     },
 
     module: {
-        loaders: [
-            { test: /\.css/, loader: "style-loader!css-loader" },
-            { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.png/, loader: "url-loader?limit=10000&mimetype=image/png" },
-
-            // **IMPORTANT** This is needed so that each bootstrap js file required by
-            // bootstrap-webpack has access to the jQuery object
-            { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
-            
-            
-            {test: /\.jsx$/, loader: "jsx-loader?harmony" },
-
-            { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff2" },
-            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
+        loaders: [{
+            test: /\.jsx?$/, // A regexp to test the require path. accepts either js or jsx
+            //exclude: /(node_modules)/,
+            loader: 'babel', // The module to load. "babel" is short for "babel-loader"
+            query: {
+                presets: ['es2015', 'react']
+            }
+        }, { 
+            test: /\.less$/, 
+            loader: "style-loader!css-loader!less-loader" 
+        }, { 
+            test: /\.gif$/, 
+            loader: "url-loader?mimetype=image/png" 
+        }, { 
+            test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, 
+            loader: "url-loader?mimetype=application/font-woff" 
+        }, { 
+            test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, 
+            loader: "file-loader?name=[name].[ext]" 
+        }, {
+            test: /(\.scss|\.css)$/,
+            loader: 'style!css-loader'
+        }
         ]
-    }, 
-
-    plugins: [
-        new webpack.IgnorePlugin(/vertx/)
-    ]
-}
+    },
+};
